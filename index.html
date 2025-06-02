@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gallery SMP</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 15px;
+      background: #f5f5f5;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .card {
+      background: white;
+      width: 180px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s ease-in-out;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
+    }
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    #modalPreview {
+      display: none;
+      position: fixed;
+      top:0; left:0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    #modalPreview img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #fff;
+    }
+    #modalPreview .close-btn {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Gallery SMP</h1>
+
+  <div class="gallery" id="gallery"></div>
+
+  <div id="modalPreview">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <img id="modalImage" src="" alt="Preview Foto" />
+  </div>
+
+  <script>
+    // Buat array nama file foto (sesuaikan dengan nama file di folder photos)
+    const photos = [];
+    for(let i = 1; i <= 16; i++) {
+      photos.push(`photos/photo${i}.jpg`);
+    }
+
+    const gallery = document.getElementById('gallery');
+    const modal = document.getElementById('modalPreview');
+    const modalImg = document.getElementById('modalImage');
+
+    function openModal(src) {
+      modalImg.src = src;
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+      modalImg.src = '';
+    }
+
+    function renderGallery() {
+      photos.forEach(src => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<img src="${src}" alt="Foto Kenangan" />`;
+        card.onclick = () => openModal(src);
+        gallery.appendChild(card);
+      });
+    }
+
+    renderGallery();
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+  </script>
+
+</body>
+</html>
